@@ -1,0 +1,25 @@
+# Example configuration — copy to f.args and edit, or just launch the GUI
+# (python gui.py), which creates and manages f.args for you.
+
+[elements]
+group_1 = Cs          # bottom-left vertices of each diagram
+group_2 = Sn Pb       # top vertices (columns of the summary grid)
+group_3 = Cl Br       # bottom-right vertices
+groups  = A M X       # placeholder names shown on key.png
+
+[query]
+run_query    = true   # query the Materials Project (needs MP_API_KEY set)
+write_all    = true   # CSVs including predicted-only compounds
+write_exp    = true   # CSVs restricted to experimentally known (ICSD)
+experimental = true   # which dataset the plots treat as primary
+
+[plot]
+run_plot    = true    # individual per-system diagrams
+run_summary = true    # stitched summary grid + key figure
+theory      = true    # overlay predicted compounds as hollow markers
+no_formulas = false   # hide formula annotations
+no_labels   = false   # hide titles/legends/corner labels
+markersize  = 10
+
+[output]
+out_dir = output      # CSVs land here; plots in out_dir/phase_diagrams

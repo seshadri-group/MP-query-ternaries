@@ -1,0 +1,37 @@
+# Conda environment for the ternary phase diagram workflow + GUI.
+#
+# Create:    conda env create -f environment.yml
+# Activate:  conda activate mp-ternaries
+#
+# Then set your Materials Project API key before running:
+#    export MP_API_KEY="your-key-here"       (bash/zsh)
+#    $env:MP_API_KEY = "your-key-here"       (PowerShell)
+#
+# Launch the GUI with:  python gui.py
+# Or run headless with: python run_workflow.py
+#
+###
+# If needed, modify or remove the environment.
+#
+# Update the environment after changing environment.yml:
+# conda env update -f environment.yml --prune
+#
+# Remove the environment completely:
+# conda deactivate
+# conda env remove --name mp-ternaries 
+###
+
+name: mp-ternaries
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11        # pinned minor version: broad wheel support for pymatgen/mp-api
+  - numpy
+  - matplotlib
+  - pymatgen           # composition parsing; pulls spglib etc. — conda handles the compiled deps
+  - tk                 # tkinter backend for the GUI (bundled with python on most installs,
+                       # listed explicitly so minimal/conda-forge builds don't miss it)
+  - pip
+  - pip:
+      - mp-api         # Materials Project client (pip-only; not on conda-forge)
+      - adjustText     # label de-overlapping in the diagrams

@@ -1,0 +1,18 @@
+# Results — regenerable, sometimes large; keep the repo code-only
+output/
+phase_diagrams/
+*.csv
+
+# Per-user config (each person's f.args differs; see f.args.example)
+f.args
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,13 @@
+# venv alternative to environment.yml:
+#   python -m venv .venv
+#   source .venv/bin/activate      (Windows: .venv\Scripts\activate)
+#   pip install -r requirements.txt
+#
+# Note: tkinter ships with python itself and cannot be pip-installed.
+# On Debian/Ubuntu system pythons you may need:  sudo apt install python3-tk
+
+numpy
+matplotlib
+pymatgen
+mp-api
+adjustText
