@@ -16,7 +16,7 @@ binaries.
 2. Create the environment:
    ```
    conda env create -f environment.yml
-   conda activate phase-diagrams
+   conda activate mp-ternaries
    ```
    (prefer venv? `pip install -r requirements.txt` works too)
 3. Get a free Materials Project API key from
@@ -30,7 +30,7 @@ binaries.
 
 **GUI** (recommended):
 ```
-conda activate phase-diagrams
+conda activate mp-ternaries
 python gui.py
 ```
 Fill in your element groups, press *Run workflow*, and watch the log.
