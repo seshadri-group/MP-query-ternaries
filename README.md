@@ -14,12 +14,15 @@ binaries.
 
 1. Install [conda](https://conda-forge.org/download/) if you don't have it.
 2. Get a free Materials Project API key from
-   https://materialsproject.org/api and set it in your shell:
-   ```
-   export MP_API_KEY="your-key-here"          # bash/zsh — add to ~/.zshrc
-   ```
-   On Windows, set `MP_API_KEY` as a user environment variable instead
-   (System Properties → Environment Variables).
+   https://materialsproject.org/api — then just paste it into the GUI's
+   "API key" field and press **Save** on first launch. It's stored privately
+   in `~/.mp_api_key` on your machine.
+
+   (Alternative for headless/terminal use: set an `MP_API_KEY` environment
+   variable — note on macOS it must go in `~/.zprofile`, not `~/.zshrc`, to
+   be visible to the double-click launcher. The env var takes precedence
+   over the saved file if both exist.)
+
    Never commit your key or paste it into any file in this repo.
 
 That's it — the launcher below creates the conda environment automatically
@@ -85,6 +88,7 @@ add by hand (e.g. custom CSV paths), so GUI and manual editing mix freely.
   bytecode compilation) — that's normal and happens once.
 * Working inside cloud-synced folders (Box, Dropbox) can slow large runs;
   point `out_dir` at a local folder if runs feel sluggish.
+
 
 ---
 

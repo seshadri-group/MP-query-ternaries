@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 run_workflow.py — query the Materials Project and generate ternary phase diagrams.
-All settings are read from f.args. Requires MP_API_KEY environment variable.
+All settings are read from f.args. Requires a Materials Project API key,
+from the MP_API_KEY environment variable or a one-line ~/.mp_api_key file.
 
 Query output flags (under [query] in f.args):
   write_all = true/false   # write _all CSV files (default: true)
@@ -26,7 +27,24 @@ import re
 import sys
 import time
 
-API_KEY = os.getenv("MP_API_KEY")
+def _resolve_api_key():
+    """
+    Resolve the Materials Project API key: the MP_API_KEY environment
+    variable wins; otherwise fall back to ~/.mp_api_key (a one-line file the
+    GUI can create). The file fallback exists because macOS launches
+    double-clicked .command files in non-interactive shells that do NOT
+    source ~/.zshrc, so an export there is invisible to the GUI launcher.
+    """
+    key = os.getenv("MP_API_KEY")
+    if key:
+        return key.strip()
+    key_file = Path.home() / ".mp_api_key"
+    if key_file.exists():
+        return key_file.read_text().strip() or None
+    return None
+
+
+API_KEY = _resolve_api_key()
 
 # Legend marker size, as a fraction of the actual plotted marker size, used
 # consistently by every legend in the script (per-diagram legends and the
@@ -230,7 +248,7 @@ def _query_and_write(mpr, chemsys_list, output_path, exp_mode):
 def run_ternary_query(config, group_1, group_2, group_3):
     from mp_api.client import MPRester
     if not API_KEY:
-        raise ValueError("MP_API_KEY not set.")
+        raise ValueError("No API key found: set MP_API_KEY or save a key via the GUI (~/.mp_api_key).")
 
     write_all = config.getboolean("query", "write_all", fallback=True)
     write_exp = config.getboolean("query", "write_exp", fallback=True)
@@ -255,7 +273,7 @@ def run_ternary_query(config, group_1, group_2, group_3):
 def run_binary_query(config, group_1, group_2, group_3):
     from mp_api.client import MPRester
     if not API_KEY:
-        raise ValueError("MP_API_KEY not set.")
+        raise ValueError("No API key found: set MP_API_KEY or save a key via the GUI (~/.mp_api_key).")
 
     write_all = config.getboolean("query", "write_all", fallback=True)
     write_exp = config.getboolean("query", "write_exp", fallback=True)

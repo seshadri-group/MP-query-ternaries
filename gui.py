@@ -156,14 +156,23 @@ class WorkflowGUI:
             ttk.Label(plot_frame, text=labels[key]).grid(row=i, column=0, sticky="w", padx=(0, 8), pady=2)
             ttk.Entry(plot_frame, textvariable=var).grid(row=i, column=1, sticky="ew", pady=2)
 
-        # --- API key status ------------------------------------------------
-        key_frame = ttk.Frame(main)
+        # --- API key -------------------------------------------------------
+        # The key is resolved like the workflow does: MP_API_KEY env var
+        # first, then ~/.mp_api_key. The entry + Save button writes the file
+        # (chmod 600), because macOS runs double-clicked .command launchers
+        # in non-interactive shells that don't source ~/.zshrc — so relying
+        # on an exported variable breaks for GUI users.
+        key_frame = ttk.LabelFrame(main, text="Materials Project API key", padding=8)
         key_frame.pack(fill="x", pady=(0, 8))
-        key_set = bool(os.getenv("MP_API_KEY"))
-        key_msg = ("MP_API_KEY: set ✓" if key_set
-                   else "MP_API_KEY: NOT SET — queries will fail (set it in your shell before launching)")
-        ttk.Label(key_frame, text=key_msg,
-                  foreground=("green" if key_set else "red")).pack(anchor="w")
+        key_frame.columnconfigure(0, weight=1)
+
+        self.key_var = tk.StringVar()
+        key_entry = ttk.Entry(key_frame, textvariable=self.key_var, show="•")
+        key_entry.grid(row=0, column=0, sticky="ew", padx=(0, 6))
+        ttk.Button(key_frame, text="Save key", command=self.save_key).grid(row=0, column=1)
+        self.key_status = ttk.Label(key_frame, text="")
+        self.key_status.grid(row=1, column=0, columnspan=2, sticky="w", pady=(4, 0))
+        self._refresh_key_status()
 
         # --- Buttons -------------------------------------------------------
         btn_frame = ttk.Frame(main)
@@ -185,6 +194,45 @@ class WorkflowGUI:
         self.root.after(100, self._drain_log)
         self.root.protocol("WM_DELETE_WINDOW", self._on_close)
 
+    # -- API key ------------------------------------------------------------
+
+    KEY_FILE = Path.home() / ".mp_api_key"
+
+    @classmethod
+    def resolve_key(cls):
+        """Same precedence as the workflow: env var, then ~/.mp_api_key."""
+        key = os.getenv("MP_API_KEY")
+        if key:
+            return key.strip(), "environment variable"
+        if cls.KEY_FILE.exists():
+            key = cls.KEY_FILE.read_text().strip()
+            if key:
+                return key, str(cls.KEY_FILE)
+        return None, None
+
+    def save_key(self):
+        key = self.key_var.get().strip()
+        if not key:
+            messagebox.showerror("Empty key", "Paste your API key first "
+                                 "(from https://materialsproject.org/api).")
+            return
+        self.KEY_FILE.write_text(key + "\n")
+        self.KEY_FILE.chmod(0o600)  # private to this user
+        self.key_var.set("")
+        self._refresh_key_status()
+        self._append_log(f"API key saved to {self.KEY_FILE}\n")
+
+    def _refresh_key_status(self):
+        key, source = self.resolve_key()
+        if key:
+            self.key_status.config(
+                text=f"Key found ✓  (from {source})", foreground="green")
+        else:
+            self.key_status.config(
+                text="No key found — paste your key above and press Save "
+                     "(get one free at materialsproject.org/api)",
+                foreground="red")
+
     # -- actions ------------------------------------------------------------
 
     def save_only(self):
@@ -205,18 +253,29 @@ class WorkflowGUI:
                 messagebox.showerror("Missing input", f"{key} must not be empty.")
                 return
         self._write_form()
+        key, _source = self.resolve_key()
+        if not key:
+            messagebox.showerror(
+                "No API key",
+                "No Materials Project API key found. Paste your key in the "
+                "API key field and press Save (free at materialsproject.org/api).")
+            return
         self._append_log("── Starting workflow ──\n")
         self.run_btn.config(state="disabled")
         self.stop_btn.config(state="normal")
 
         # -u forces unbuffered stdout so the log streams line-by-line instead
-        # of arriving in one lump when the process exits.
+        # of arriving in one lump when the process exits. The resolved key is
+        # injected explicitly so the workflow sees it regardless of how the
+        # GUI itself was launched (terminal, double-click, etc.).
+        env = dict(os.environ, MP_API_KEY=key)
         self.proc = subprocess.Popen(
             [sys.executable, "-u", str(WORKFLOW)],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
             cwd=str(WORKFLOW.parent),
+            env=env,
         )
         threading.Thread(target=self._reader, daemon=True).start()
 
