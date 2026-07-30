@@ -285,7 +285,12 @@ def run_binary_query(config, group_1, group_2, group_3):
     # Duplicate pairs (e.g. the same group_3 element paired with several
     # group_1/group_2 elements' shared partners) are collapsed inside
     # _query_and_write, so building them naively here is fine.
+    #raw_pairs = (
+    #    [(a, c) for a in group_1 for c in group_3] +
+    #    [(b, c) for b in group_2 for c in group_3]
+    #)
     raw_pairs = (
+        [(a, b) for a in group_1 for b in group_2] +
         [(a, c) for a in group_1 for c in group_3] +
         [(b, c) for b in group_2 for c in group_3]
     )
