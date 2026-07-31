@@ -71,21 +71,44 @@ def parse_elements(config, key):
     return [e.strip() for e in config.get("elements", key, fallback="").split() if e.strip()]
 
 
+def _default_out_dir(config):
+    """
+    Build the default output directory name from the configured element
+    groups, joining elements within a group with "-" and groups with "_":
+
+        group_1 = Ta Ho, group_2 = Co, group_3 = N Si
+            → "output_Ta-Ho_Co_N-Si"
+
+    Used only when [output] out_dir is NOT set in f.args, so an explicit
+    out_dir keeps working exactly as before. Falls back to plain "output"
+    if any group is empty (main() rejects empty groups anyway; this just
+    keeps output_path safe if called before that validation).
+    """
+    groups = [parse_elements(config, k) for k in ("group_1", "group_2", "group_3")]
+    if not all(groups):
+        return "output"
+    return "output_" + "_".join("-".join(g) for g in groups)
+
+
 def output_path(config, key, default_name):
     """
     Resolve an output file path. All outputs default to living inside a
-    single run-output directory ([output] out_dir, default "output") so that
-    CSVs and the phase_diagrams/ folder end up together in one place that's
-    easy to open, zip, or point the GUI at.
+    single run-output directory ([output] out_dir) so that CSVs and the
+    phase_diagrams/ folder end up together in one place that's easy to
+    open, zip, or point the GUI at. When out_dir is not set, the directory
+    is named after the configured element groups (see _default_out_dir),
+    e.g. "output_Ta-Ho_Co_N-Si", so runs over different chemistries don't
+    overwrite each other.
 
     Precedence:
       * if the key (e.g. ternary_exp_csv) is explicitly set in f.args, that
         value is used verbatim — hand-customized configs keep working exactly
         as before;
-      * otherwise the default filename is placed under out_dir.
+      * otherwise the default filename is placed under out_dir (explicit
+        value if set, group-based default otherwise).
     The parent directory is created if needed.
     """
-    out_dir  = Path(config.get("output", "out_dir", fallback="output"))
+    out_dir  = Path(config.get("output", "out_dir", fallback=None) or _default_out_dir(config))
     explicit = config.get("output", key, fallback=None)
     path     = Path(explicit) if explicit else out_dir / default_name
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -582,7 +605,7 @@ def _load_diagram_data(config):
     no_formulas  = config.getboolean("plot",  "no_formulas",  fallback=False)
     no_labels    = config.getboolean("plot",  "no_labels",    fallback=False)
     markersize   = config.getint(    "plot",  "markersize",   fallback=10)
-    out_dir      = config.get("output", "out_dir",  fallback="output")
+    out_dir      = config.get("output", "out_dir", fallback=None) or _default_out_dir(config)
     output_dir   = config.get("output", "plot_dir", fallback=str(Path(out_dir) / "phase_diagrams"))
 
     exp_ternary_path = output_path(config, "ternary_exp_csv", "compounds_ternary_exp.csv")

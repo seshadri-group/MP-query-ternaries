@@ -43,7 +43,9 @@ TEXT_FIELDS = [
     ("elements", "group_3", ""),
     ("elements", "groups", "A M X"),
     ("plot", "markersize", "10"),
-    ("output", "out_dir", "output"),
+    # out_dir defaults to blank: when empty, run_workflow.py names the
+    # folder after the element groups (e.g. output_Ta-Ho_Co_N-Si).
+    ("output", "out_dir", ""),
 ]
 
 BOOL_FIELDS = [
@@ -124,7 +126,7 @@ class WorkflowGUI:
             "group_3": "Group 3 (bottom-right)",
             "groups": "Group placeholder names",
             "markersize": "Marker size",
-            "out_dir": "Output directory (CSVs + diagrams)",
+            "out_dir": "Output directory (blank = auto-named from groups)",
         }
         row = 0
         for section, key, default in TEXT_FIELDS[:4]:
@@ -151,7 +153,14 @@ class WorkflowGUI:
         plot_frame.pack(fill="x", pady=(0, 8))
         plot_frame.columnconfigure(1, weight=1)
         for i, (section, key, default) in enumerate(TEXT_FIELDS[4:]):
-            var = tk.StringVar(value=config.get(section, key, fallback=default))
+            value = config.get(section, key, fallback=default)
+            # Migration: older GUI versions saved out_dir = output into
+            # f.args, which would forever override the new auto-naming.
+            # Treat that legacy literal as "unset" so those configs pick up
+            # group-based folder names; anything else the user typed is kept.
+            if key == "out_dir" and value.strip() == "output":
+                value = ""
+            var = tk.StringVar(value=value)
             self.text_vars.append(var)
             ttk.Label(plot_frame, text=labels[key]).grid(row=i, column=0, sticky="w", padx=(0, 8), pady=2)
             ttk.Entry(plot_frame, textvariable=var).grid(row=i, column=1, sticky="ew", pady=2)
@@ -284,10 +293,24 @@ class WorkflowGUI:
             self.proc.terminate()
             self._append_log("── Terminated by user ──\n")
 
+    def _default_out_dir(self):
+        """
+        Mirror run_workflow.py's _default_out_dir naming (elements joined
+        with "-" within a group, groups joined with "_"), built from the
+        current form fields. Duplicated rather than imported to preserve the
+        design rule that the GUI never imports the workflow — if the naming
+        scheme changes in run_workflow.py, update this to match.
+        """
+        groups = [self.text_vars[i].get().split() for i in range(3)]
+        if not all(groups):
+            return "output"
+        return "output_" + "_".join("-".join(g) for g in groups)
+
     def open_output(self):
         # out_dir is the last text field (see TEXT_FIELDS order); it holds
-        # the CSVs directly and the diagrams under phase_diagrams/.
-        out_dir = Path(self.text_vars[-1].get() or "output")
+        # the CSVs directly and the diagrams under phase_diagrams/. A blank
+        # field means the auto-named, group-based folder.
+        out_dir = Path(self.text_vars[-1].get().strip() or self._default_out_dir())
         if not out_dir.exists():
             messagebox.showinfo("Not found", f"{out_dir} does not exist yet.")
             return
