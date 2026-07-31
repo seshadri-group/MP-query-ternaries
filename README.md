@@ -108,6 +108,3 @@ add by hand (e.g. custom CSV paths), so GUI and manual editing mix freely.
   point `out_dir` at a local folder if runs feel sluggish.
 
 ---
-
-*Developed by Anya Mulligan, Seshadri Group, UCSB, with assistance from
-Claude (Anthropic). July 2026.*
