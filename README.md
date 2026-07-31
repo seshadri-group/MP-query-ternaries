@@ -11,21 +11,30 @@ per system, along with a summary grid of every diagram and a corresponding key f
 
 ## GUI (recommended)
 
-1. **Install [conda](https://conda-forge.org/download/)** if you don't have it.
-2. **Get a free Materials Project API key** from https://materialsproject.org/api
-3. **Double-click the launcher**: `run_gui.command` (macOS) or `run_gui.bat`
+1. **Download this repository**: click the green **Code** button at the top
+   of this page, choose **Download ZIP**, then unzip it somewhere convenient
+   (e.g. your Desktop, not a cloud-synced folder).
+2. **Install [conda](https://conda-forge.org/download/)** if you don't have it.
+3. **Get a free Materials Project API key** from https://materialsproject.org/api
+4. **Double-click the launcher** inside the unzipped folder:
+   `run_gui.command` (macOS) or `run_gui.bat`
    (Windows). No environment setup needed — the first launch builds the conda
    environment automatically. (macOS may show an "unidentified developer"
    prompt the first time — right-click → Open.)
-4. **Paste your API key** into the GUI's "API key" field and press **Save**.
+5. **Paste your API key** into the GUI's "API key" field and press **Save**.
    It's stored privately in `~/.mp_api_key` on your machine.
 
 Then fill in your element groups, press *Run workflow*, and watch the log.
 *Open output folder* takes you to the results.
 
-## Command line & headless
-
 This section is optional. If you prefer the command line:
+
+**Clone the repository**
+
+```
+git clone https://github.com/<org>/<repo>.git
+cd <repo>
+```
 
 **Set up the environment manually**
 
