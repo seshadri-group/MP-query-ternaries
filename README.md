@@ -9,7 +9,7 @@ Results are written to CSV --- including space groups, ICSD IDs, and
 stability/formation energies --- and plotted as one ternary composition diagram
 per system, along with a summary grid of every diagram and a corresponding key figure.
 
-## GUI (recommended)
+## Setup: GUI (recommended)
 
 1. **Download this repository**: click the green **Code** button at the top
    of this page, choose **Download ZIP**, then unzip it somewhere convenient
@@ -18,16 +18,18 @@ per system, along with a summary grid of every diagram and a corresponding key f
 3. **Get a free Materials Project API key** from https://materialsproject.org/api
 4. **Double-click the launcher** inside the unzipped folder:
    `run_gui.command` (macOS) or `run_gui.bat`
-   (Windows). No environment setup needed — the first launch builds the conda
-   environment automatically. (macOS may show an "unidentified developer"
-   prompt the first time — right-click → Open.)
+   (Windows). No environment setup needed because the first launch builds the conda
+   environment automatically. On macOS, if you get an "unidentified
+   developer" warning: open the Apple menu () → **System Settings** →
+   **Privacy & Security**, scroll down, and click **Open Anyway**, then
+   double-click the launcher again.
 5. **Paste your API key** into the GUI's "API key" field and press **Save**.
    It's stored privately in `~/.mp_api_key` on your machine.
 
 Then fill in your element groups, press *Run workflow*, and watch the log.
 *Open output folder* takes you to the results.
 
-## Command line & headless
+## Setup: Command line & headless
 
 This section is optional. If you prefer the command line:
 
