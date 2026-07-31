@@ -1,4 +1,4 @@
-# Ternary Phase Diagram Explorer
+# README: Ternary Phase Diagram Explorer
 
 ![icon](icon.png)
 
