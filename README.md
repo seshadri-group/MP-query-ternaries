@@ -74,10 +74,11 @@ file if both exist.
 
 ## Outputs
 
-Everything lands in one folder (default `output/`, configurable):
+Everything lands in one folder named after your element groups, e.g. with
+group 1 = Ta Ho, group 2 = Co, group 3 = N Si:
 
 ```
-output/
+output_Ta-Ho_Co_N-Si/
 ├── compounds_ternary_exp.csv    # experimentally known ternaries
 ├── compounds_ternary_all.csv    # + predicted
 ├── compounds_binary_exp.csv     # bounding binaries
@@ -91,6 +92,7 @@ output/
 
 CSVs contain one row per Materials Project entry (polymorphs included) with
 space group, ICSD IDs, stability, and formation/decomposition energies.
+Setting `out_dir` in `f.args` overrides the automatic folder name.
 
 ## Configuration
 
