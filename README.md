@@ -7,8 +7,7 @@ compounds formed from three user-defined element groups (e.g. *A* = rare
 earths, *M* = transition metals, *X* = anions), plus the bounding binaries.
 Results are written to CSV --- including space groups, ICSD IDs, and
 stability/formation energies --- and plotted as one ternary composition diagram
-per system, along with a summary grid of every diagram and a key figure.
-Known (ICSD) and predicted compounds are distinguished by marker style.
+per system, along with a summary grid of every diagram and a corresponding key figure.
 
 ## GUI (recommended)
 
@@ -91,7 +90,7 @@ add by hand (e.g. custom CSV paths), so GUI and manual editing mix freely.
 * The `[timing]` lines in the log show where time goes; the Materials
   Project query is normally the dominant cost.
 * First run in a fresh environment is slower (matplotlib font cache,
-  bytecode compilation) — that's normal and happens once.
+  bytecode compilation).
 * Working inside cloud-synced folders (Box, Dropbox) can slow large runs;
   point `out_dir` at a local folder if runs feel sluggish.
 
