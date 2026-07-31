@@ -27,6 +27,8 @@ per system, along with a summary grid of every diagram and a corresponding key f
 Then fill in your element groups, press *Run workflow*, and watch the log.
 *Open output folder* takes you to the results.
 
+## Command line & headless
+
 This section is optional. If you prefer the command line:
 
 **Clone the repository**
