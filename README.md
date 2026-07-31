@@ -1,58 +1,64 @@
 # Ternary Phase Diagram Explorer
 
-Query the [Materials Project](https://materialsproject.org) for all known and
-predicted compounds across a grid of ternary chemical systems, and render
-them as ternary phase diagrams — individually and as a stitched summary grid.
-
 ![icon](icon.png)
 
-Solid markers are experimentally known compounds (ICSD); hollow markers are
-DFT-predicted. Blue circles are ternaries, red squares are the bounding
-binaries.
+Query the [Materials Project](https://materialsproject.org) for all ternary
+compounds formed from three user-defined element groups (e.g. *A* = rare
+earths, *M* = transition metals, *X* = anions), plus the bounding binaries.
+Results are written to CSV --- including space groups, ICSD IDs, and
+stability/formation energies --- and plotted as one ternary composition diagram
+per system, along with a summary grid of every diagram and a key figure.
+Known (ICSD) and predicted compounds are distinguished by marker style.
 
-## Setup (once)
+## GUI (recommended)
 
-1. Install [conda](https://conda-forge.org/download/) if you don't have it.
-2. Get a free Materials Project API key from
-   https://materialsproject.org/api — then just paste it into the GUI's
-   "API key" field and press **Save** on first launch. It's stored privately
-   in `~/.mp_api_key` on your machine.
+1. **Install [conda](https://conda-forge.org/download/)** if you don't have it.
+2. **Get a free Materials Project API key** from https://materialsproject.org/api
+3. **Double-click the launcher**: `run_gui.command` (macOS) or `run_gui.bat`
+   (Windows). No environment setup needed — the first launch builds the conda
+   environment automatically. (macOS may show an "unidentified developer"
+   prompt the first time — right-click → Open.)
+4. **Paste your API key** into the GUI's "API key" field and press **Save**.
+   It's stored privately in `~/.mp_api_key` on your machine.
 
-   (Alternative for headless/terminal use: set an `MP_API_KEY` environment
-   variable — note on macOS it must go in `~/.zprofile`, not `~/.zshrc`, to
-   be visible to the double-click launcher. The env var takes precedence
-   over the saved file if both exist.)
+Then fill in your element groups, press *Run workflow*, and watch the log.
+*Open output folder* takes you to the results.
 
-   Never commit your key or paste it into any file in this repo.
+## Command line & headless
 
-That's it — the launcher below creates the conda environment automatically
-on first run. To set it up manually instead (or for headless use):
+This section is optional. If you prefer the command line:
+
+**Set up the environment manually**
+
 ```
 conda env create -f environment.yml
 conda activate mp-ternaries
 ```
+
 (prefer venv? `pip install -r requirements.txt` works too)
 
-## Use
+**Launch the GUI from a terminal**
 
-**GUI** — double-click `run_gui.command` (macOS) or `run_gui.bat` (Windows).
-No environment activation needed; the first launch builds the environment
-if it doesn't exist yet. (macOS may show an "unidentified developer" prompt
-the first time — right-click → Open.)
-
-Fill in your element groups, press *Run workflow*, and watch the log.
-*Open output folder* takes you to the results.
-
-From a terminal, the equivalent is:
 ```
-conda run --no-capture-output -n mp-ternaries python gui.py
+conda activate mp-ternaries
+python gui.py
 ```
 
-**Headless**: copy `f.args.example` to `f.args`, edit it, then
+**Headless (no GUI)** — copy `f.args.example` to `f.args`, edit it, then:
+
 ```
 conda activate mp-ternaries
 python run_workflow.py
 ```
+
+For headless use you can supply your key as an `MP_API_KEY` environment
+variable instead of the GUI's saved file; it takes precedence over the saved
+file if both exist.
+
+* **macOS**: it must go in `~/.zprofile`, not `~/.zshrc`, to be visible to
+  the double-click launcher.
+* **Windows**: set `MP_API_KEY` as a user environment variable
+  (Control Panel → User Environment Variables).
 
 ## Outputs
 
@@ -89,7 +95,7 @@ add by hand (e.g. custom CSV paths), so GUI and manual editing mix freely.
 * Working inside cloud-synced folders (Box, Dropbox) can slow large runs;
   point `out_dir` at a local folder if runs feel sluggish.
 
-
 ---
 
-*Developed by Anya Mulligan, Seshadri Group, UCSB, with assistance from Claude (Anthropic). July 2026.*
+*Developed by Anya Mulligan, Seshadri Group, UCSB, with assistance from
+Claude (Anthropic). July 2026.*
