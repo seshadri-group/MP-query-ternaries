@@ -36,8 +36,8 @@ This section is optional. If you prefer the command line:
 **Clone the repository**
 
 ```
-git clone https://github.com/<org>/<repo>.git
-cd <repo>
+git clone https://github.com/seshadri-group/MP-query-ternaries.git
+cd MP-query-ternaries
 ```
 
 **Set up the environment manually**
