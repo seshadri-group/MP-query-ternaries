@@ -30,6 +30,43 @@ per system, along with a summary grid of every diagram and a corresponding key f
 Then fill in your element groups, press *Run workflow*, and watch the log.
 *Open output folder* takes you to the results.
 
+## Outputs
+
+Everything lands in one folder named after your element groups, e.g. with
+group 1 = Ta Ho, group 2 = Co, group 3 = N Si:
+
+```
+output_Ta-Ho_Co_N-Si/
+├── compounds_ternary_exp.csv    # experimentally known ternaries
+├── compounds_ternary_all.csv    # + predicted
+├── compounds_binary_exp.csv     # bounding binaries
+├── compounds_binary_all.csv
+└── phase_diagrams/
+    ├── <A>-<M>-<X>.png          # one diagram per ternary system
+    ├── summary.png              # all diagrams in one grid
+    ├── key.png                  # legend + group definitions
+    └── blank.png                # empty template triangle
+```
+
+CSVs contain one row per Materials Project entry (polymorphs included) with
+space group, ICSD IDs, stability, and formation/decomposition energies.
+Setting `out_dir` in `f.args` overrides the automatic folder name.
+
+## Configuration
+
+All behavior is driven by `f.args` — see `f.args.example` for every option
+with comments. The GUI reads and writes `f.args`, and preserves any keys you
+add by hand (e.g. custom CSV paths), so GUI and manual editing mix freely.
+
+## Tips
+
+* The `[timing]` lines in the log show where time goes; the Materials
+  Project query is normally the dominant cost.
+* First run in a fresh environment is slower (matplotlib font cache,
+  bytecode compilation).
+* Working inside cloud-synced folders (Box, Dropbox) can slow large runs;
+  point `out_dir` at a local folder if runs feel sluggish.
+
 ## Setup: Command line & headless
 
 This section is optional. If you prefer the command line:
@@ -72,44 +109,6 @@ file if both exist.
   the double-click launcher.
 * **Windows**: set `MP_API_KEY` as a user environment variable
   (Control Panel → User Environment Variables).
-
-## Outputs
-
-Everything lands in one folder named after your element groups, e.g. with
-group 1 = Ta Ho, group 2 = Co, group 3 = N Si:
-
-```
-output_Ta-Ho_Co_N-Si/
-├── compounds_ternary_exp.csv    # experimentally known ternaries
-├── compounds_ternary_all.csv    # + predicted
-├── compounds_binary_exp.csv     # bounding binaries
-├── compounds_binary_all.csv
-└── phase_diagrams/
-    ├── <A>-<M>-<X>.png          # one diagram per ternary system
-    ├── summary.png              # all diagrams in one grid
-    ├── key.png                  # legend + group definitions
-    └── blank.png                # empty template triangle
-```
-
-CSVs contain one row per Materials Project entry (polymorphs included) with
-space group, ICSD IDs, stability, and formation/decomposition energies.
-Setting `out_dir` in `f.args` overrides the automatic folder name.
-
-## Configuration
-
-All behavior is driven by `f.args` — see `f.args.example` for every option
-with comments. The GUI reads and writes `f.args`, and preserves any keys you
-add by hand (e.g. custom CSV paths), so GUI and manual editing mix freely.
-
-## Tips
-
-* The `[timing]` lines in the log show where time goes; the Materials
-  Project query is normally the dominant cost.
-* First run in a fresh environment is slower (matplotlib font cache,
-  bytecode compilation).
-* Working inside cloud-synced folders (Box, Dropbox) can slow large runs;
-  point `out_dir` at a local folder if runs feel sluggish.
-
 ---
 
 *Developed with assistance from Claude (Anthropic).*
