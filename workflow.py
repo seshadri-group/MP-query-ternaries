@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-run_workflow.py — query the Materials Project and generate ternary phase diagrams.
+workflow.py — query the Materials Project and generate ternary phase diagrams.
 All settings are read from f.args. Requires a Materials Project API key,
 from the MP_API_KEY environment variable or a one-line ~/.mp_api_key file.
 

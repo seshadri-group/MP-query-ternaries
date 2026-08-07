@@ -98,7 +98,7 @@ python gui.py
 
 ```
 conda activate mp-ternaries
-python run_workflow.py
+python workflow.py
 ```
 
 For headless use you can supply your key as an `MP_API_KEY` environment

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-gui.py — a small tkinter front-end for run_workflow.py.
+gui.py — a small tkinter front-end for workflow.py.
 
 Design notes
 ------------
 * The GUI is a thin wrapper around f.args: it pre-fills the form from an
   existing f.args (if present), writes f.args when you press Run, and then
-  launches run_workflow.py as a *subprocess*, streaming its stdout into the
+  launches workflow.py as a *subprocess*, streaming its stdout into the
   log pane. The GUI never imports the workflow, so the two can't break each
   other and the script remains fully usable headless from a terminal.
 * Only the standard library is used (tkinter, subprocess, threading, queue),
@@ -29,7 +29,7 @@ from pathlib import Path
 from tkinter import messagebox, scrolledtext, ttk
 
 CONFIG_PATH = "f.args"
-WORKFLOW = Path(__file__).parent / "run_workflow.py"
+WORKFLOW = Path(__file__).parent / "workflow.py"
 
 
 # --------------------------------------------------------------------------
@@ -43,7 +43,7 @@ TEXT_FIELDS = [
     ("elements", "group_3", ""),
     ("elements", "groups", "A M X"),
     ("plot", "markersize", "10"),
-    # out_dir defaults to blank: when empty, run_workflow.py names the
+    # out_dir defaults to blank: when empty, workflow.py names the
     # folder after the element groups (e.g. output_Ta-Ho_Co_N-Si).
     ("output", "out_dir", ""),
 ]
@@ -295,11 +295,11 @@ class WorkflowGUI:
 
     def _default_out_dir(self):
         """
-        Mirror run_workflow.py's _default_out_dir naming (elements joined
+        Mirror workflow.py's _default_out_dir naming (elements joined
         with "-" within a group, groups joined with "_"), built from the
         current form fields. Duplicated rather than imported to preserve the
         design rule that the GUI never imports the workflow — if the naming
-        scheme changes in run_workflow.py, update this to match.
+        scheme changes in workflow.py, update this to match.
         """
         groups = [self.text_vars[i].get().split() for i in range(3)]
         if not all(groups):
