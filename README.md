@@ -36,7 +36,7 @@ Everything lands in one folder named after your element groups, e.g. with
 group 1 = Cs group 2 = Sn Pb group 3 = Cl Br I:
 
 ```
-output_Cs-Sn_Pb_Cl-Br-I/
+output_Cs_Sn-Pb_Cl-Br-I/
 ├── compounds_ternary_exp.csv    # experimentally known ternaries
 ├── compounds_ternary_all.csv    # + predicted
 ├── compounds_binary_exp.csv     # bounding binaries
