@@ -16,14 +16,14 @@ per system, along with a summary grid of every diagram and a corresponding key f
    **Download ZIP**, then unzip it somewhere convenient (e.g. your Desktop, not a 
    cloud-synced folder).
 2. **Install [conda](https://conda-forge.org/download/)** if you don't have it.
-3. **Get a free Materials Project API key** from https://materialsproject.org/api
-4. **Double-click the launcher** inside the unzipped folder:
-   `run_gui.command` (macOS) or `run_gui.bat`
-   (Windows). No environment setup needed because the first launch builds the conda
+3. **Double-click the launcher** inside the unzipped folder:
+   `MP-query-ternaries_GUI.command` (macOS) or `MP-query-ternaries_GUI.bat` (Windows).
+   No environment setup needed because the first launch builds the conda
    environment automatically. On macOS, if you get an "unidentified
-   developer" warning: open the Apple menu () → **System Settings** →
+   developer" warning: open the Apple menu () → **System Settings** →
    **Privacy & Security**, scroll down, and click **Open Anyway**, then
    double-click the launcher again.
+4. **Get a free Materials Project API key** from https://materialsproject.org/api
 5. **Paste your API key** into the GUI's "API key" field and press **Save**.
    It's stored privately in `~/.mp_api_key` on your machine.
 
@@ -33,10 +33,10 @@ Then fill in your element groups, press *Run workflow*, and watch the log.
 ## Outputs
 
 Everything lands in one folder named after your element groups, e.g. with
-group 1 = Ta Ho, group 2 = Co, group 3 = N Si:
+group 1 = Cs, group 2 = Sn, Pb group 3 = Cl Br I:
 
 ```
-output_Ta-Ho_Co_N-Si/
+output_Cs-Sn_Pb_Cl-Br-I/
 ├── compounds_ternary_exp.csv    # experimentally known ternaries
 ├── compounds_ternary_all.csv    # + predicted
 ├── compounds_binary_exp.csv     # bounding binaries

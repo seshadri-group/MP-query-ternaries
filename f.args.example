@@ -4,7 +4,7 @@
 [elements]
 group_1 = Cs          # bottom-left vertices of each diagram
 group_2 = Sn Pb       # top vertices (columns of the summary grid)
-group_3 = Cl Br       # bottom-right vertices
+group_3 = Cl Br I     # bottom-right vertices
 groups  = A M X       # placeholder names shown on key.png
 
 [query]
