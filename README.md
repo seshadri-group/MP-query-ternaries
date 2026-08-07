@@ -11,9 +11,10 @@ per system, along with a summary grid of every diagram and a corresponding key f
 
 ## Setup: GUI (recommended)
 
-1. **Download this repository**: click the green **Code** button at the top
-   of this page, choose **Download ZIP**, then unzip it somewhere convenient
-   (e.g. your Desktop, not a cloud-synced folder).
+1. **Download this repository**: click the green **Code** button at the top of 
+   [this page](https://github.com/seshadri-group/MP-query-ternaries), choose 
+   **Download ZIP**, then unzip it somewhere convenient (e.g. your Desktop, not a 
+   cloud-synced folder).
 2. **Install [conda](https://conda-forge.org/download/)** if you don't have it.
 3. **Get a free Materials Project API key** from https://materialsproject.org/api
 4. **Double-click the launcher** inside the unzipped folder:
@@ -110,3 +111,5 @@ add by hand (e.g. custom CSV paths), so GUI and manual editing mix freely.
   point `out_dir` at a local folder if runs feel sluggish.
 
 ---
+
+*Developed with assistance from Claude (Anthropic).*
