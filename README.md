@@ -33,7 +33,7 @@ Then fill in your element groups, press *Run workflow*, and watch the log.
 ## Outputs
 
 Everything lands in one folder named after your element groups, e.g. with
-group 1 = Cs, group 2 = Sn, Pb group 3 = Cl Br I:
+group 1 = Cs group 2 = Sn Pb group 3 = Cl Br I:
 
 ```
 output_Cs-Sn_Pb_Cl-Br-I/
